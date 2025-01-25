@@ -25,13 +25,8 @@ const initialState: IngredientState = {
 export const fetchAllIngredients = createAsyncThunk(
   'ingredients/fetchAll',
   async (_, thunkAPI) => {
-    try {
-      const response = await getIngredientsApi();
-      return response;
-    } catch (error) {
-      console.error('Ошибка при получении ингредиентов:', error);
-      return thunkAPI.rejectWithValue(error);
-    }
+    const response = await getIngredientsApi();
+    return response;
   }
 );
 

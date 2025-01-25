@@ -22,11 +22,12 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { useDispatch, useSelector } from '../../services/store';
 import { fetchAllIngredients } from '../../services/ingredientSlice';
 import { checkUserAuth } from '../../services/userSlice';
+import { getOrderNumber } from '../../utils/utils';
 const App = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const dispatch = useDispatch();
-
+  const orderNum = getOrderNumber();
   useEffect(() => {
     dispatch(checkUserAuth());
   }, []);
@@ -101,7 +102,7 @@ const App = () => {
           <Route
             path='/feed/:number'
             element={
-              <Modal title='Order Info' onClose={() => navigate(-1)}>
+              <Modal title={`#${orderNum}`} onClose={() => navigate(-1)}>
                 <OrderInfo />
               </Modal>
             }
@@ -109,7 +110,7 @@ const App = () => {
           <Route
             path='/ingredients/:id'
             element={
-              <Modal title='Ingredient Details' onClose={() => navigate(-1)}>
+              <Modal title='Детали ингредиента' onClose={() => navigate(-1)}>
                 <IngredientDetails />
               </Modal>
             }
@@ -117,7 +118,7 @@ const App = () => {
           <Route
             path='/profile/orders/:number'
             element={
-              <Modal title='Order Info' onClose={() => navigate(-1)}>
+              <Modal title={`#${orderNum}`} onClose={() => navigate(-1)}>
                 <OrderInfo />
               </Modal>
             }

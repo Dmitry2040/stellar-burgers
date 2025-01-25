@@ -35,7 +35,7 @@ export const BurgerConstructor: FC = () => {
     return [bunId, ...ingredientsIds, bunId];
   };
 
-  const onOrderClick = () => {
+  const onOrderClick = async () => {
     if (!constructorItems.bun || orderRequest) return;
     if (!user) {
       navigate('/login');
@@ -43,7 +43,10 @@ export const BurgerConstructor: FC = () => {
     }
     const ingredientIds = getIngredientsIds();
     dispatch(fetchOrderRequest(ingredientIds));
-    dispatch(clearConstructor());
+    const response = await dispatch(fetchOrderRequest(ingredientIds));
+    if (response) {
+      dispatch(clearConstructor());
+    }
   };
   const closeOrderModal = () => {
     dispatch(resetOrderModal());

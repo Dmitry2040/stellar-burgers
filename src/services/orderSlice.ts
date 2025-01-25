@@ -5,7 +5,7 @@ import {
 } from '@reduxjs/toolkit';
 import { TOrder } from '@utils-types';
 import { RootState, useDispatch, useSelector } from './store';
-
+import { clearConstructor } from './constructorSlice';
 import {
   getOrderByNumberApi,
   getOrdersApi,
@@ -34,48 +34,29 @@ const initialState: IOrderSliceState = {
 export const fetchOrderDetails = createAsyncThunk(
   'order/fetchOrderDetails',
   async (orderNumber: number, thunkAPI) => {
-    try {
-      const response = await getOrderByNumberApi(orderNumber);
-      const order = response.orders.find(
-        (order) => order.number === orderNumber
-      );
-      if (!order) {
-        return thunkAPI.rejectWithValue('Order not found');
-      }
-      return order;
-    } catch (error) {
-      console.error('Ошибка при получении заказов:', error);
-      return thunkAPI.rejectWithValue(error);
+    const response = await getOrderByNumberApi(orderNumber);
+    const order = response.orders.find((order) => order.number === orderNumber);
+    if (!order) {
+      return thunkAPI.rejectWithValue('Order not found');
     }
+    return order;
   }
 );
 
 export const fetchOrderRequest = createAsyncThunk<TNewOrderResponse, string[]>(
   'order/fetchOrderRequest',
   async (data: string[], thunkAPI) => {
-    try {
-      const response = await orderBurgerApi(data);
-
-      console.log(response);
-      return response;
-    } catch (error) {
-      console.error('Ошибка при создании заказа:', error);
-      return thunkAPI.rejectWithValue(error);
-    }
+    const response = await orderBurgerApi(data);
+    console.log(response);
+    return response;
   }
 );
 
 export const fetchOrdersProfile = createAsyncThunk(
   'order/fetchOrdersProfile',
   async (_, thunkAPI) => {
-    try {
-      const response = await getOrdersApi();
-
-      return response;
-    } catch (error) {
-      console.error('Ошибка при получении заказов:', error);
-      return thunkAPI.rejectWithValue(error);
-    }
+    const response = await getOrdersApi();
+    return response;
   }
 );
 
@@ -96,7 +77,7 @@ const orderSlice = createSlice({
       })
       .addCase(fetchOrderDetails.fulfilled, (state, action) => {
         state.isLoading = false;
-        state.success = true;
+        state.success = false;
         state.order = action.payload;
       })
       .addCase(fetchOrderDetails.rejected, (state, action) => {
@@ -136,6 +117,11 @@ const orderSlice = createSlice({
       });
   }
 });
+
+export const getOrderByNumber = createAsyncThunk(
+  'order/getOrderByNumber',
+  async (data: number) => await getOrderByNumberApi(data)
+);
 
 export default orderSlice.reducer;
 
