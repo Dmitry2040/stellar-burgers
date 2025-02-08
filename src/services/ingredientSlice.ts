@@ -15,7 +15,7 @@ interface IngredientState {
   selectedIngredient: TIngredient | null;
 }
 
-const initialState: IngredientState = {
+export const initialState: IngredientState = {
   items: [],
   status: 'idle',
   error: null,

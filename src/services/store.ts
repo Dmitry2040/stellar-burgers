@@ -19,7 +19,7 @@ const loggerMiddleware: Middleware = (store) => (next) => (action) => {
   return next(action);
 };
 
-const rootReducer = combineReducers({
+export const rootReducer = combineReducers({
   ingredientsSlice: ingredientsReducer,
   constructorSlice: constructorReducer,
   feedsSlice: feedsSlice,
