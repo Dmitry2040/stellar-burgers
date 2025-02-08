@@ -3,9 +3,8 @@ import {
   createSelector,
   createSlice
 } from '@reduxjs/toolkit';
-import { TOrder } from '@utils-types';
-import { RootState, useDispatch, useSelector } from './store';
-import { clearConstructor } from './constructorSlice';
+import { TOrder } from '../utils/types';
+import { RootState } from './store';
 import {
   getOrderByNumberApi,
   getOrdersApi,
@@ -22,7 +21,7 @@ interface IOrderSliceState {
   error: string | null;
 }
 
-const initialState: IOrderSliceState = {
+export const initialState: IOrderSliceState = {
   success: false,
   order: null,
   profileOrders: null,

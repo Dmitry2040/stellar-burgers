@@ -3,7 +3,7 @@ import {
   createSelector,
   createSlice
 } from '@reduxjs/toolkit';
-import { TUser } from '@utils-types';
+import { TUser } from '../utils/types';
 import {
   loginUserApi,
   logoutApi,
@@ -24,7 +24,7 @@ interface IUserState {
   error: string | null;
 }
 
-const initialState: IUserState = {
+export const initialState: IUserState = {
   success: false,
   isCheckAuth: false,
   user: null,
@@ -97,6 +97,7 @@ export const logout = createAsyncThunk('user/logout', async (_, thunkAPI) => {
   try {
     const response = await logoutApi();
     localStorage.removeItem('refreshToken');
+    localStorage.removeItem('accessToken');
     deleteCookie('accessToken');
     console.log('Выход из системы выполнен');
     return response;
@@ -157,12 +158,10 @@ export const userSlice = createSlice({
         state.success = true;
         state.isLoading = false;
         state.user = action.payload.user;
-        console.log('данные успешно изменены');
       })
       .addCase(updateUser.rejected, (state, action) => {
         state.success = false;
         state.error = action.payload as string;
-        console.log('данные не изменены');
       })
       .addCase(checkUserAuth.fulfilled, (state, action) => {
         state.success = true;
@@ -174,14 +173,12 @@ export const userSlice = createSlice({
 });
 
 export default userSlice.reducer;
-
 export const selectUser = (state: RootState) => state.userSlice.user;
 export const selectUserName = createSelector(
   [selectUser],
   (user) => user?.name
 );
 export const selectIsLoading = (state: RootState) => state.userSlice.isLoading;
-
 export const { setUser, checkAuth } = userSlice.actions;
 export const selectRegisterUser = (state: RootState) => state.userSlice.user;
 export const selectIsCheckAuth = (state: RootState) =>

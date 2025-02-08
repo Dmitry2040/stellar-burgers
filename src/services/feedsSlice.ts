@@ -5,7 +5,7 @@ import {
   PayloadAction
 } from '@reduxjs/toolkit';
 import { getFeedsApi, TFeedsResponse } from '../utils/burger-api';
-import { TOrder } from '@utils-types';
+import { TOrder } from '../utils/types';
 import { RootState } from './store';
 
 interface FeedsState {
@@ -17,7 +17,7 @@ interface FeedsState {
   error: string | null;
 }
 
-const initialState: FeedsState = {
+export const initialState: FeedsState = {
   success: false,
   orders: [],
   total: 0,
